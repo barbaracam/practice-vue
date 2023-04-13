@@ -3,8 +3,10 @@
         <base-button @click="setSelectedTab('stored-resources')" :mode="storedResButtonMode">Stored Resources</base-button>
         <base-button @click="setSelectedTab('add-resource')" :mode="addResButtonMode">Add Resource</base-button>
         <!-- dinamic components, is prop for -->
+    </base-card> 
+    <keep-alive>   
         <component :is="selectedTab"></component>
-    </base-card>  
+    </keep-alive> 
 </template>
 
 <script>
@@ -45,7 +47,8 @@ export default {
         return{
             resources: this.storedResources,
             // without parenthesis the method below as im not executing, only pointed
-            addResource: this.addResource
+            addResource: this.addResource,
+            deleteResource: this.removeResource,
         }
     },
     methods:{
@@ -60,8 +63,14 @@ export default {
                 description: description,
                 link:url
             } 
+            // unshift is push but at the start of the array
             this.storedResources.unshift(newResource);
             this.selectedTab = 'stored-resources';
+        },
+        removeResource(resId){
+            const resIndex = this.storedResources.findIndex(res => res.id === resId );
+            // remove is splice only that element
+            this.storedResources.splice(resIndex, 1);
         }
     }
 }
