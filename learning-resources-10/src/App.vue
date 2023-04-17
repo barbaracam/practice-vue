@@ -1,5 +1,5 @@
 <template>
-<the-header title="RememberMe"></the-header>
+  <the-header title="RememberMe"></the-header>
 <the-resources></the-resources>
 <!-- This resources="storedResources" from data() go to the props storeResources.vue -->
   <!-- <stored-resources :resources="storedResources"></stored-resources> -->

@@ -1,4 +1,4 @@
-# http-request-chap12
+# chap12http
 
 ## Project setup
 ```
