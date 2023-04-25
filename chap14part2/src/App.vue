@@ -1,24 +1,17 @@
 <template>
-<div class="container">
-  <users-list></users-list>
-</div>
   <div class="container">
     <div class="block" :class="{animate: animatedBlock}"></div>
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
     <!-- @enter is = to the active class, aftr-enter = after is active -->
-    <!-- binding to false the css as we use js, we are telling we wont use css we will js -->
     <transition name="para" 
-    :css='false'
     @before-enter="beforeEnter" 
     @enter="enterActive" 
     @after-enter="afterEnterActive" 
     @before-leave="beforeLeave"
     @leave="leave"
-    @after-leave='afterLeave'
-    @enter-cancelled="enterCancelled"
-    @leave-cancelled="leaveCancelled">
+    @after-leave='afterLeave'>
       <!-- <transition enter-to-class="some-class" enter-active-class="..."> -->
       <p v-if="paraIsVisible">This is only visible sometimes...</p>
     </transition>    
@@ -44,19 +37,13 @@
 </template>  
 
 <script>
-import UsersList from './components/UsersList.vue';
 export default {
-  components:{
-  UsersList
-  },
   data() {
     return { 
       dialogIsVisible: false,
       animatedBlock: false,
       paraIsVisible:false,
       usersAreVisible:false,
-      enterInterval:null,
-      leaveInterval:null,
      };
   },
   methods: {
@@ -81,22 +68,10 @@ export default {
     beforeEnter(el){
       console.log('beforeEnter()');
       console.log(el);
-      el.style.opacity = 0;
     },    
-    enterActive(el, done){
+    enterActive(el){
       console.log('enter()');
       console.log(el);
-      let round = 1;
-      // execute code every miliseconds setInterval()
-      //using error function because this.enterInterval will mean something else outside than inside
-      this.enterInterval = setInterval(() => { 
-        el.style.opacity = round * 0.01;
-        round++;
-        if(round > 100){
-          clearInterval(this.enterInterval);
-          done();
-        }        
-      }, 20);
     },
     afterEnterActive(el){
       console.log('afterEnter()');
@@ -105,34 +80,14 @@ export default {
     beforeLeave(el){
       console.log('beforeLeave()');
       console.log(el);
-      el.style.opacity = 1;
     },
-    leave(el, done){
+    leave(el){
       console.log('leave()');
       console.log(el);
-
-      let round = 1;
-      // execute code every miliseconds setInterval()
-      this.leaveInterval = setInterval(()  =>{ 
-        el.style.opacity = 1- round * 0.01;
-        round++;
-        if(round > 100){
-          clearInterval(this.leaveInterval);
-          done();
-        }        
-        }, 20);
     },
     afterLeave(el){
       console.log('afterLeave()');
       console.log(el);
-    },
-    enterCancelled(el){
-      console.log(el);
-      clearInterval(this.enterCancelled);
-    },
-    leaveCancelled(el){
-      console.log(el);
-      clearInterval(this.leaveCancelled);
     },
   },
 };
@@ -187,9 +142,35 @@ button:active {
   animation: slide-scale 0.3s ease-out forwards;
 }
 
+/* .v-enter-from {
+  opacity:0;
+  transform: translateY(-30px);
+} */
+.para-enter-active{
+  /* transition: all 0.3s ease-out; */
+  animation:slide-scale 0.3s ease-out;
+}
+/* .v-enter-to{
+  opacity:1;
+  transform: translateY(1);
+} */
+
+/* .v-leave-from {
+  opacity:0;
+  transform: translateY(0px);
+} */
+/* non foward because the animation will be removed */
+.para-leave-active{
+  /* transition: all 0.3s ease-in; */
+  animation:slide-scale 0.3s ease-out;
+}
+/* .v-leave-to{
+  opacity:1;
+  transform: translateY(-30px);
+} */
 
 
-/* @keyframes slide-scale{
+@keyframes slide-scale{
   0% {
     transform: translatex(0) scale(1);
   }
@@ -199,7 +180,7 @@ button:active {
   100% {
     transform: translatex(-150px) scale(1);
   }
-} */
+}
 .fade-button-enter-from, .fade-button-leave-to{
   opacity:0; 
 }
