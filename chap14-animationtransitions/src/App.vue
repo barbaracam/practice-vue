@@ -1,54 +1,17 @@
-<template>
-<div class="container">
-  <users-list></users-list>
-</div>
-  <div class="container">
-    <div class="block" :class="{animate: animatedBlock}"></div>
-    <button @click="animateBlock">Animate</button>
-  </div>
-  <div class="container">
-    <!-- @enter is = to the active class, aftr-enter = after is active -->
-    <!-- binding to false the css as we use js, we are telling we wont use css we will js -->
-    <transition name="para" 
-    :css='false'
-    @before-enter="beforeEnter" 
-    @enter="enterActive" 
-    @after-enter="afterEnterActive" 
-    @before-leave="beforeLeave"
-    @leave="leave"
-    @after-leave='afterLeave'
-    @enter-cancelled="enterCancelled"
-    @leave-cancelled="leaveCancelled">
-      <!-- <transition enter-to-class="some-class" enter-active-class="..."> -->
-      <p v-if="paraIsVisible">This is only visible sometimes...</p>
-    </transition>    
-    <button @click="toggleParagraph">Toggle Paragraph</button>
-  </div>
-  <div class="container">
-    <transition name="fade-button" mode="out-in">
-      <!-- are allowed t have more than one child element as long as only one child is added to the real dom  -->
-      <button @click="showUsers" v-if="!usersAreVisible">Show Users</button>
-      <button @click="hideUsers" v-else>Hi users</button>
-    </transition>
-    
-  </div>  
-    <!-- <base-modal @close="hideDialog" v-if="dialogIsVisible"> -->
-    <!-- :open sending as prop in basemodal -->
-    <base-modal @close="hideDialog" :open="dialogIsVisible">
-      <p>This is a test dialog!</p>
-      <button @click="hideDialog">Close it!</button>
-    </base-modal>
-  <div class="container">
-    <button @click="showDialog">Show Dialog</button>
-  </div>
+<template>  
+    <router-view v-slot="slotProps">
+      <transition name='route' mode="out-in">
+        <component :is="slotProps.Component"></component>
+      </transition> 
+    </router-view>   
 </template>  
 
 <script>
-import UsersList from './components/UsersList.vue';
+// import UsersList from './components/UsersList.vue';
 export default {
-  components:{
-  UsersList
-  },
+  // components:{
+  // UsersList
+  // },
   data() {
     return { 
       dialogIsVisible: false,
@@ -186,10 +149,18 @@ button:active {
   /* fowards mean the last stage is the one that stays */
   animation: slide-scale 0.3s ease-out forwards;
 }
+.route-enter-from {}
 
+.route-enter-active {
+animation:slide-scale 0.4s ease-out;
+}
+.route-enter-to {}
 
+.route-leave-active {
+animation:slide-scale 0.4s ease-in;
+}
 
-/* @keyframes slide-scale{
+@keyframes slide-scale{
   0% {
     transform: translatex(0) scale(1);
   }
@@ -199,7 +170,7 @@ button:active {
   100% {
     transform: translatex(-150px) scale(1);
   }
-} */
+}
 .fade-button-enter-from, .fade-button-leave-to{
   opacity:0; 
 }
@@ -212,9 +183,8 @@ button:active {
 .fade-button-enter-to, .fade-button-leave-from{
   opacity:1;
 }
-@keyframe fade-button {
 
-}
+
 
 
 </style>
