@@ -1,4 +1,4 @@
-# chap14part2
+# chap15vuex
 
 ## Project setup
 ```
