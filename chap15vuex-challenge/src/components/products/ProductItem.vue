@@ -20,17 +20,35 @@
 
 <script>
 export default {
-  inject: ['addProductToCart'],
+  // inject: ['addProductToCart'],
   props: ['id', 'image', 'title', 'price', 'description'],
   methods: {
-    addToCart() {
-      this.addProductToCart({
-        id: this.id,
-        image: this.image,
-        title: this.title,
-        price: this.price,
+    addToCart() {      
+      //this.addProductToCart({
+      //   id: this.id,
+      //   image: this.image,
+      //   title: this.title,
+      //   price: this.price,
+      // });   
+
+
+      //option b
+      //.dispatch 'addToCart comes from  actions
+
+      // this.$store.dispatch('cart/addToCart', {
+      //   id: this.id,
+      //   image: this.image,
+      //   title: this.title,
+      //   price: this.price,
+      // });
+
+
+      //option c, just pass the id
+      this.$store.dispatch('cart/addToCart', {
+        id: this.id        
       });
-    },
+       
+    }
   },
 };
 </script>

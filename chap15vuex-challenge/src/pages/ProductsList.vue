@@ -18,10 +18,17 @@
 import ProductItem from '../components/products/ProductItem.vue';
 
 export default {
-  inject: ['products'],
+  // inject: ['products'],
   components: {
     ProductItem,
   },
+  computed:{
+    //same name loop
+    products(){
+      //prods because it is the namespace, comes from the file store/module/products.js
+      return this.$store.getters['prods/products'];
+    }
+  }
 };
 </script>
 

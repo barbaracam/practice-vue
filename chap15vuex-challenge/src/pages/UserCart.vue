@@ -3,8 +3,9 @@
     <h2>Your Cart</h2>
     <h3>Total Amount: <base-badge mode="elegant">${{ cartTotal }}</base-badge></h3>
     <ul>
+      <!-- // changed to v-for="item in cart.items" -->
       <cart-item
-        v-for="item in cart.items"
+        v-for="item in cartItems"
         :key="item.productId"
         :prod-id="item.productId"
         :title="item.title"
@@ -20,13 +21,18 @@
 import CartItem from '../components/cart/CartItem.vue';
 
 export default {
-  inject: ['cart'],
+  // inject: ['cart'],
   components: {
     CartItem,
   },
   computed: {
     cartTotal() {
-      return this.cart.total.toFixed(2);
+      // return this.cart.total.toFixed(2);
+      return this.$store.getters['cart/totalSum'].toFixed(2);
+    },
+    //same name like the loop cart items and the [../products] come from the cart module getters
+    cartItems(){
+      return this.$store.getters['cart/products']
     }
   }
 };
