@@ -3,7 +3,6 @@ import counterActions from './actions.js'
 import counterGetters from './getters.js'
 
 
-
 //const counterModule =
 export default {
     namespaced:true,
