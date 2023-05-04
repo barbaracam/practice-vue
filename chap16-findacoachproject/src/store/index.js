@@ -7,6 +7,16 @@ const store = createStore({
     modules:{
         coaches: coachesModule,
         // request: requestsModule
+    },
+    state(){
+        return{
+            userId:'c3',
+        }
+    },
+    getters:{
+        userId(state){
+            return state.userId;
+        }
     }
 });
 

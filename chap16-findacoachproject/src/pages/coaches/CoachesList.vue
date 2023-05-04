@@ -9,7 +9,7 @@
             <div class="controls">
                 <base-button mode:="outline">Refresh</base-button>
                 <!-- <router-link to="/register">Register as Coach</router-link>, the too exist as we added to the router -->
-                <base-button link to="/register">Register as Coach</base-button>
+                <base-button v-if="!isCoach" link to="/register">Register as Coach</base-button>
             </div>
             <ul v-if="hasCoaches">
                 <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
@@ -70,7 +70,10 @@ export default {
         },
         hasCoaches(){
             return this.$store.getters['coaches/hasCoaches']
-        }
+        },        
+        isCoach(){
+            return this.$store.getters['coaches/isCoach'];
+        }    
     },
     methods:{
         setFilters(updatedFilters){
