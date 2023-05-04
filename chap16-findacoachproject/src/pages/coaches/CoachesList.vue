@@ -1,4 +1,10 @@
 <template>
+<!-- two exclamation: If it would pass and just error,I would pass in a string as a value for show,
+but show once a Boolean.If I add one exclamation mark,I pass the opposite and I don't want the opposite.
+So two exclamation marks convert a string,a truthy value into a real true Boolean. -->
+<base-dialog :show="!!error" title="An error ocurred!!" @close="handleError">
+    <p>{{error}}</p>
+</base-dialog>
     <section>
         <!-- this come from the coach filter from vue-->
         <!-- git try -->
@@ -7,11 +13,14 @@
     <section>
         <base-card>
             <div class="controls">
-                <base-button mode:="outline">Refresh</base-button>
+                <base-button mode:="outline" @click="loadCoaches">Refresh</base-button>
                 <!-- <router-link to="/register">Register as Coach</router-link>, the too exist as we added to the router -->
-                <base-button v-if="!isCoach" link to="/register">Register as Coach</base-button>
+                <base-button v-if="!isCoach && !isLoading" link to="/register">Register as Coach</base-button>
             </div>
-            <ul v-if="hasCoaches">
+            <div v-if="isLoading">
+                <base-spinner></base-spinner>
+            </div>
+            <ul v-else-if="hasCoaches">
                 <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
                     {{coach.firstName}}
                 </li> -->
@@ -43,6 +52,8 @@ export default {
     },
     data(){
         return{
+            isLoading:false,
+            error:null,
             activeFilters:{
             frontend:true,
             backend:true,
@@ -69,15 +80,32 @@ export default {
             });
         },
         hasCoaches(){
-            return this.$store.getters['coaches/hasCoaches']
+            return !this.isLoading && this.$store.getters['coaches/hasCoaches']
         },        
         isCoach(){
             return this.$store.getters['coaches/isCoach'];
         }    
     },
+    created(){
+        //this will loadcoaches from methods will trigger when the component is created 
+        this.loadCoaches();
+    },
     methods:{
         setFilters(updatedFilters){
             this.activeFilters = updatedFilters;
+        },
+        //this will loadcoaches will trigger when the component is created 
+        async loadCoaches(){
+            this.isLoading = true;
+            try{
+                await this.$store.dispatch('coaches/loadCoaches'); 
+            }catch(error){
+                this.error = error.message || "Something is not working";
+            }            
+            this.isLoading = false;
+        },
+        handleError(){
+            this.error = null;
         }
     }
 }
