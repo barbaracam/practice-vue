@@ -34,7 +34,8 @@ export default {
     computed:{
         fullName(){
             return this.selectedCoach.firstName + '' + this.selectedCoach.lastName;
-        },areas(){
+        },
+        areas(){
             return this.selectedCoach.areas;
         },
         contactLink() {
