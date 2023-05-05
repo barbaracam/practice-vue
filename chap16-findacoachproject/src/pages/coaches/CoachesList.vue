@@ -13,7 +13,7 @@ So two exclamation marks convert a string,a truthy value into a real true Boolea
     <section>
         <base-card>
             <div class="controls">
-                <base-button mode:="outline" @click="loadCoaches">Refresh</base-button>
+                <base-button mode:="outline" @click="loadCoaches(true)">Refresh</base-button>
                 <!-- <router-link to="/register">Register as Coach</router-link>, the too exist as we added to the router -->
                 <base-button v-if="!isCoach && !isLoading" link to="/register">Register as Coach</base-button>
             </div>
@@ -95,10 +95,10 @@ export default {
             this.activeFilters = updatedFilters;
         },
         //this will loadcoaches will trigger when the component is created 
-        async loadCoaches(){
+        async loadCoaches(refresh = false ){
             this.isLoading = true;
             try{
-                await this.$store.dispatch('coaches/loadCoaches'); 
+                await this.$store.dispatch('coaches/loadCoaches', {forceRefresh:refresh }); 
             }catch(error){
                 this.error = error.message || "Something is not working";
             }            

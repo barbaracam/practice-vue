@@ -8,8 +8,9 @@ export default {
    state(){
     return {
       // userIsCoach:false,
-        coaches:[
-            {
+      lastFetch:null,
+      coaches:[
+              {
                 id: 'c1',
                 firstName: 'Maximilian',
                 lastName: 'Schwarzmüller',

@@ -31,32 +31,37 @@ export default {
 
     },
     
-    async loadCoaches(context){
+    async loadCoaches(context, payload){
+        if(!payload.forceRefresh && !context.getters.shouldUpdate){
+            return;
+            //if it is not true it wont continue and just wrote the return,
+        }
         //no second argument because im ok with the get
         const response = await fetch(`https://coachproject-e2078-default-rtdb.firebaseio.com/coaches.json`);
 
-        const resposeData = await response.json();
+        const responseData = await response.json();
 
         if (!response.ok){
-            const error = new Error(resposeData.message || 'Failed to Fetch');
+            const error = new Error(responseData.message || 'Failed to Fetch');
             throw error;
         }
         //coaaches array
         const coaches = [];
 
-        for(const key in resposeData){
+        for(const key in responseData){
             const coach = {
                 id:key,
-                firstName: resposeData[key].firstName,
-                lastName:resposeData[key].lastName,
-                description:resposeData[key].description,
-                areas:resposeData[key].areas,
-                hourlyRate:resposeData[key].hourlyRate, 
+                firstName: responseData[key].firstName,
+                lastName:responseData[key].lastName,
+                description:responseData[key].description,
+                areas:responseData[key].areas,
+                hourlyRate:responseData[key].hourlyRate, 
             };
             //access the coach array from few lines up
             coaches.push(coach);
         }
         context.commit('setCoaches', coaches);
+        context.commit('setFetchTimestamp');
     }
 };
 
