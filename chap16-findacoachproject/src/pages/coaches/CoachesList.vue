@@ -2,42 +2,44 @@
 <!-- two exclamation: If it would pass and just error,I would pass in a string as a value for show,
 but show once a Boolean.If I add one exclamation mark,I pass the opposite and I don't want the opposite.
 So two exclamation marks convert a string,a truthy value into a real true Boolean. -->
-<base-dialog :show="!!error" title="An error ocurred!!" @close="handleError">
-    <p>{{error}}</p>
-</base-dialog>
-    <section>
-        <!-- this come from the coach filter from vue-->
-        <!-- git try -->
-        <coach-filter @change-filter="setFilters"></coach-filter>
-    </section>
-    <section>
-        <base-card>
-            <div class="controls">
-                <base-button mode:="outline" @click="loadCoaches(true)">Refresh</base-button>
-                <!-- <router-link to="/register">Register as Coach</router-link>, the too exist as we added to the router -->
-                <base-button v-if="!isCoach && !isLoading" link to="/register">Register as Coach</base-button>
-            </div>
-            <div v-if="isLoading">
-                <base-spinner></base-spinner>
-            </div>
-            <ul v-else-if="hasCoaches">
-                <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
-                    {{coach.firstName}}
-                </li> -->
-                <!-- we modified the line on top as we created a coachitem compoent -->
-                <coach-item v-for="coach in filteredCoaches" 
-                :key="coach.id"
-                :id="coach.id"
-                :first-name="coach.firstName"
-                :last-name="coach.lastName"
-                :rate="coach.hourlyRate"
-                :areas="coach.areas"
-                :description="coach.description"
-                ></coach-item>
-            </ul>
-            <h3 v-else>No Coaches Found</h3>
-        </base-card>
-    </section>
+    <!-- <div> -->
+        <base-dialog :show="!!error" title="An error ocurred!!" @close="handleError">
+        <p>{{error}}</p>
+        </base-dialog>
+        <section>
+            <!-- this come from the coach filter from vue-->
+            <!-- git try -->
+            <coach-filter @change-filter="setFilters"></coach-filter>
+        </section>
+        <section>
+            <base-card>
+                <div class="controls">
+                    <base-button mode:="outline" @click="loadCoaches(true)">Refresh</base-button>
+                    <!-- <router-link to="/register">Register as Coach</router-link>, the too exist as we added to the router -->
+                    <base-button v-if="!isCoach && !isLoading" link to="/register">Register as Coach</base-button>
+                </div>
+                <div v-if="isLoading">
+                    <base-spinner></base-spinner>
+                </div>
+                <ul v-else-if="hasCoaches">
+                    <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
+                        {{coach.firstName}}
+                    </li> -->
+                    <!-- we modified the line on top as we created a coachitem compoent -->
+                    <coach-item v-for="coach in filteredCoaches" 
+                    :key="coach.id"
+                    :id="coach.id"
+                    :first-name="coach.firstName"
+                    :last-name="coach.lastName"
+                    :rate="coach.hourlyRate"
+                    :areas="coach.areas"
+                    :description="coach.description"
+                    ></coach-item>
+                </ul>
+                <h3 v-else>No Coaches Found</h3>
+            </base-card>
+        </section>
+    <!-- </div> -->
 </template>
 
 <script>
