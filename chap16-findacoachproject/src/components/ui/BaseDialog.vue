@@ -32,6 +32,7 @@ export default {
       type: String,
       required: false,
     },
+    //ensure the dialog cant be dismissed
     fixed: {
       type: Boolean,
       required: false,
