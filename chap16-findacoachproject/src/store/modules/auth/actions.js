@@ -1,3 +1,5 @@
+let timer;
+
 export default{
     async login(context, payload){
         return context.dispatch('auth', {
@@ -36,34 +38,68 @@ export default{
             throw error;
         }
 
+        // plus before response data will convert it to a number
+        //commenting below so we dont added to the exact time, 5 seconds instead
+        const expiresIn = +responseData.expiresIn *1000;
+        // const expiresIn = 5000;
+        const expirationDate = new Date().getTime() + expiresIn;
+
+
         localStorage.setItem('token', responseData.idToken);
-        localStorage.setItem('userId', responseData.userId);        
+        localStorage.setItem('userId', responseData.userId);  
+        localStorage.setItem('tokenExpiration', expirationDate);
+        
+        timer = setTimeout(function(){
+            context.dispatch('autoLogout')
+        },expiresIn)
 
         // console.log(responseData);
         context.commit('setUser', {
             token: responseData.idToken,
             userId: responseData.localId,
-            tokenExpiration: responseData.expiresIn
+            // tokenExpiration: expirationDate
         })
     },
     tryLogin(context){
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId')
+        const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+        const expiresIn = +tokenExpiration - new Date().getTime();
+
+        if (expiresIn < 0){
+            return;
+        }
+        timer = setTimeout (function(){
+            context.dispatch('autoLogout');
+        },expiresIn);
 
         if(token && userId){
             context.commit('setUser', {
                 token: token,
                 userId: userId,
-                tokenExpiration: null
+                // tokenExpiration: null
             })
         }
     },
     logout(context){
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('tokenExpiration');
+
+        clearTimeout(timer);
+
         context.commit('setUser',{
             token: null,
             userId:null,
             tokenExpiration : null  
         })
        
+    },
+    autoLogout(context){
+        //dispatch is action
+        context.dispatch('logout');
+        //commit it is mutation
+        context.commit('setAutoLogout')
     }
 };

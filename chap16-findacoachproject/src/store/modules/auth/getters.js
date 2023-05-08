@@ -8,5 +8,10 @@ export default{
     isAuthenticated(state){
         return !!state.token;
     },
+    didAutoLogout(state){
+        //state which im setting in the mutation
+        return state.didAutoLogout;
+    }
+
     
 }
